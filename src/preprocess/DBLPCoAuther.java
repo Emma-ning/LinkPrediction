@@ -48,9 +48,9 @@ public class DBLPCoAuther {
 			br.close();
 			bw.close();
 
-		}catch (IOException e) *程序出现异常不会立即跳出程序
+		}catch (IOException e) //程序出现异常不会立即跳出程序
 		{
-			e.printStackTrace(); *输出完整的错误日志
+			e.printStackTrace(); //输出完整的错误日志
 		} 
 
 	}
