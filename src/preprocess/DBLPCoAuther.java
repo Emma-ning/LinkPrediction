@@ -31,7 +31,7 @@ public class DBLPCoAuther {
 
 			while ((currentLineString = br.readLine()) != null) {
 				StringTokenizer st = new StringTokenizer(currentLineString," ");  
-				index = st.nextToken();
+				index = st.nextToken();   //nextToken 下一个字段
 				bw.write(index + " ");
 				index = st.nextToken();
 				bw.write(index + " ");
@@ -42,7 +42,7 @@ public class DBLPCoAuther {
 				bw.write(year + "\n");
 			}
 			
-			System.out.println(minYear);
+			System.out.println(minYear);    //println():输出字符串并换行   print():输出字符串
 			System.out.println(maxYear);
 
 			br.close();
