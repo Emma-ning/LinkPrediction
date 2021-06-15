@@ -56,14 +56,16 @@ public class DBLPDataSetGenerator {
 			*/
 			
 			
-			String f0, f1, f2, f3, label;
+			String f0, f1, f2, f3, label;   //定义三个string
 
 			//for (int i=0; i<8645734; i++){
 			while ((currentLineString = lfile.readLine()) != null) {
 			//for (int i=0; i<2888731; i++){
 
 				//currentLineString = lfile.readLine();
-				label = currentLineString.substring(currentLineString.indexOf(":")+1);
+				label = currentLineString.substring(currentLineString.indexOf(":")+1);     
+				                                                        //substring() 方法用于提取字符串中介于两个指定下标之间的字符
+				                                                        //indexOf() 方法可返回某个指定的字符串值在字符串中首次出现的位置
 
 				f0 = apppa.readLine();
 				f1 = apvpa.readLine();
