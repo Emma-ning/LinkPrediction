@@ -36,7 +36,7 @@ import java.util.TreeSet;
  */
 public class DBLPLabelGenerator {
 
-	private static TreeMap<Integer, ArrayList<Integer>> author_papers_map1 = new TreeMap<Integer, ArrayList<Integer>>();     //TreeMap？？？ 
+	private static TreeMap<Integer, ArrayList<Integer>> author_papers_map1 = new TreeMap<Integer, ArrayList<Integer>>();     //TreeMap=dict 
 	private static TreeMap<Integer, ArrayList<Integer>> paper_authors_map1 = new TreeMap<Integer, ArrayList<Integer>>();    
 
 	private static TreeMap<Integer, ArrayList<Integer>> author_papers_map2 = new TreeMap<Integer, ArrayList<Integer>>();    
@@ -128,7 +128,7 @@ public class DBLPLabelGenerator {
 					papersList.add(paperIndex);                                    //最终生成author_papers_map1（后面是如果存在paperindex的情况）
 					author_papers_map1.put(authorIndex, papersList);
 
-					if (paper_authors_map1.containsKey(paperIndex)){
+					if (paper_authors_map1.containsKey(paperIndex)){              //后面是如果存在paperindex的情况，最终生成paper_authors_map1
 						authorsList = paper_authors_map1.get(paperIndex);
 					}
 					authorsList.add(authorIndex);
@@ -155,23 +155,23 @@ public class DBLPLabelGenerator {
 
 
 			for (int i=0; i<1752443; i++){
-				TreeSet<Integer> coauthorsList = new TreeSet<Integer>();
-				if (author_papers_map1.containsKey(i)){
-					// disregard author who has less than 1 papers
-					if (author_papers_map1.get(i).size() < 1)
+				TreeSet<Integer> coauthorsList = new TreeSet<Integer>();       //生成一个新的treeset coauthorsList
+				if (author_papers_map1.containsKey(i)){                        //对于author_papers_map1，containsKey是i(即authorindex）
+					// disregard author who has less than 1 papers           忽视未发表paper的author
+					if (author_papers_map1.get(i).size() < 1)              
 						continue;
-					for (Integer p: author_papers_map1.get(i)){
-						for (Integer a: paper_authors_map1.get(p)){
+					for (Integer p: author_papers_map1.get(i)){            //对于每一个authorindex，会有好多p（即paperindex）
+						for (Integer a: paper_authors_map1.get(p)){    //每一个paperindex又会有好多的authorindex，
 							if (a != i) 
-								coauthorsList.add(a);
-						}
+								coauthorsList.add(a);          //因此可以生成一个coauthorsList，除了i以外的作者
+						}                  
 					}
-					coauthors1.put(i, coauthorsList);
+					coauthors1.put(i, coauthorsList);                     //最终生成一个coauthors1
 				}else{
 					//System.out.println("Author " + i + " has no publication at time1!.");
 				}
 
-				TreeSet<Integer> coauthorsList2 = new TreeSet<Integer>();
+				TreeSet<Integer> coauthorsList2 = new TreeSet<Integer>();     //对第二个时间段
 				if (author_papers_map2.containsKey(i)){
 					for (Integer p: author_papers_map2.get(i)){
 						for (Integer a: paper_authors_map2.get(p)){
@@ -185,7 +185,7 @@ public class DBLPLabelGenerator {
 
 
 			for (int i=0; i<1752443; i++){
-				TreeSet<Integer> coauthorsList_minPublication = new TreeSet<Integer>();
+				TreeSet<Integer> coauthorsList_minPublication = new TreeSet<Integer>();      //设置了一个最小论文数，只有超过这个数量的作者才会被考虑
 				if (author_papers_map1.containsKey(i)){
 					// disregard author who has less than min papers
 					if (author_papers_map1.get(i).size() < minPublication)
@@ -215,19 +215,19 @@ public class DBLPLabelGenerator {
 				//secondIntervalCoAuthors.clear();
 
 				if (coauthors1.containsKey(i)){
-					firstIntervalCoAuthors = coauthors1.get(i);
-					//System.out.println("coauthors1.get(" + i + "): " + firstIntervalCoAuthors);
+					firstIntervalCoAuthors = coauthors1.get(i);                                               //Firstinterval里的i（authorindex）
+					//System.out.println("coauthors1.get(" + i + "): " + firstIntervalCoAuthors);            
 
 					if (coauthors2.containsKey(i)){
-						secondIntervalCoAuthors = coauthors2.get(i);
+						secondIntervalCoAuthors = coauthors2.get(i);                                     //Secondinterval里的i（authorindex）
 						//System.out.println("coauthors2.get(" + i + "): " + secondIntervalCoAuthors);
 					}else{
 						//System.out.println("No new connections for " + i);
 						continue;
 					}
 
-					for (Integer c: secondIntervalCoAuthors){
-						if (!firstIntervalCoAuthors.contains(c)){
+					for (Integer c: secondIntervalCoAuthors){                                     //在Secondinterval的循环中，i（authorindex）中存在多个c（coauthor）
+						if (!firstIntervalCoAuthors.contains(c)){                             //如果c不在乎firstinterval中，则write文件‘bw_pos_all’---i,c
 							//System.out.println(c + " is a new connection for " + i);
 							//System.out.println(i + "," +c + ":1");
 							bw_pos_all.write(i + "," + c + ":1\n");
@@ -241,7 +241,7 @@ public class DBLPLabelGenerator {
 			}
 
 
-			for (int i=0; i<1752443; i++){
+			for (int i=0; i<1752443; i++){                                                               //在限制最小发表数量的情况下
 				if (coauthors1_minPublication.containsKey(i)){
 					firstIntervalCoAuthors = coauthors1_minPublication.get(i);
 					//System.out.println("coauthors1.get(" + i + "): " + firstIntervalCoAuthors);
@@ -278,19 +278,19 @@ public class DBLPLabelGenerator {
 			//for (int i=0; i<1752443; i++){  // 1752443
 			for (int i=0; i<1752443; i++){  // 1752443
 
-				if (coauthors1.containsKey(i)){
-					TreeSet<Integer> coauthorsList = coauthors1.get(i);
-					for (Integer j:coauthorsList){
+				if (coauthors1.containsKey(i)){                                                //对于每一个author
+					TreeSet<Integer> coauthorsList = coauthors1.get(i);                    //得到每个author的coauthor123
+					for (Integer j:coauthorsList){                                         //如果coauthor123也存在在author表中
 						if (coauthors1.containsKey(j)){
 							//cocoauthorsList = coauthors1.get(j);
-							twoHopCoauthors.addAll(coauthors1.get(j));
+							twoHopCoauthors.addAll(coauthors1.get(j));         //那么得到coauthor123的coauthor并生成字典名‘twoHopCoauthors’
 							//for (Integer k:cocoauthorsList){
 							//	if (coauthors1.containsKey(k))
 							//		threeHopCoauthors.addAll(coauthors1.get(k));
 							//}					
 						}
 					}
-					// finally decide to mergethem all!
+					// finally decide to mergethem all!                                     //此时得到的twoHopCoauthors需要去掉author和coauthor
 					twoHopCoauthors.remove(i); // remove author himself
 					twoHopCoauthors.removeAll(coauthorsList); // remove first hop coauthors
 
@@ -299,7 +299,7 @@ public class DBLPLabelGenerator {
 					//threeHopCoauthors.removeAll(coauthorsList); // remove first hop coauthors
 
 					for (Integer c: twoHopCoauthors){
-						bw_neg_all.write(Integer.toString(i)+","+Integer.toString(c) + ":0\n");
+						bw_neg_all.write(Integer.toString(i)+","+Integer.toString(c) + ":0\n");   //bw_neg_all是干什么的
 						//negativeLabelLinks.add(Integer.toString(i)+","+Integer.toString(c));
 					}					
 
