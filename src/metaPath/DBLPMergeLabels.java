@@ -47,7 +47,7 @@ public class DBLPMergeLabels {
 
 			String data;
 			while ((data = posLabelsFile.readLine()) != null) {
-				numPosLabels++;
+				numPosLabels++;                                   //前++是先自加再调用    后++是先调用再自加！
 			}
 			while ((data = negLabelsFile.readLine()) != null) {
 				numNegLabels++;
@@ -69,14 +69,14 @@ public class DBLPMergeLabels {
 			BufferedReader negLabelsFile = new BufferedReader(new FileReader(negLableFileName));
 			BufferedWriter mergedLabelsFile = new BufferedWriter(new FileWriter(new File(mergedLablesFileName)));
 
-			List<String> dataPoint = new ArrayList<String>();
-			String data;
+			List<String> dataPoint = new ArrayList<String>();                                     //设置一个list ‘datapoint’
+			String data;                                                                          //设置一个空字符串为data
 
 			while ((data = posLabelsFile.readLine()) != null) {
-				dataPoint.add(data);
+				dataPoint.add(data);                                                          //将data添加到datapoint中
 			} 
 
-			// read from negative samples with step size proportional to neg candidate samples
+			// read from negative samples with step size proportional to neg candidate samples    //选择负样本，样本选取的步长与负候选样本成比例
 			int count=0;
 			while ((data = negLabelsFile.readLine()) != null) {
 				count++;
@@ -86,7 +86,7 @@ public class DBLPMergeLabels {
 
 			int size = dataPoint.size();
 
-			Collections.shuffle(dataPoint);
+			Collections.shuffle(dataPoint);                                                      //形成最后的datapoint，汇总到文件mergedLabelsFile
 
 			for (int i=0; i<size; i++){
 				mergedLabelsFile.write(dataPoint.get(i) + "\n");
