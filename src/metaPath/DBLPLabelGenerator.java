@@ -36,7 +36,7 @@ import java.util.TreeSet;
  */
 public class DBLPLabelGenerator {
 
-	private static TreeMap<Integer, ArrayList<Integer>> author_papers_map1 = new TreeMap<Integer, ArrayList<Integer>>();    
+	private static TreeMap<Integer, ArrayList<Integer>> author_papers_map1 = new TreeMap<Integer, ArrayList<Integer>>();     //TreeMap？？？ 
 	private static TreeMap<Integer, ArrayList<Integer>> paper_authors_map1 = new TreeMap<Integer, ArrayList<Integer>>();    
 
 	private static TreeMap<Integer, ArrayList<Integer>> author_papers_map2 = new TreeMap<Integer, ArrayList<Integer>>();    
@@ -60,14 +60,15 @@ public class DBLPLabelGenerator {
 
 		int minPublication = 1; // (default should be 1) if an author has less than this min papers, will not be considered in the dataset
 
-		//minPublication = Integer.parseInt(args[0]);
+		//minPublication = Integer.parseInt(args[0]);      //parseInt：解析参数，如果 string 以 1 ~ 9 的数字开头，parseInt() 将把它解析为十进制的整数     
+		                                                   //args[0]是你传入的第一个参数
 		fromYear1 = Integer.parseInt(args[0]);
 		toYear1 = Integer.parseInt(args[1]);  
 		fromYear2 = Integer.parseInt(args[2]);
 		toYear2 = Integer.parseInt(args[3]);  
 
 
-		minPublication = 5;
+		minPublication = 5;        //如果这个作者发表的论文数量小于5篇，则不会被考虑进数据库
 		//fromYear1 = 1996;
 		//toYear1 = 1998;  
 		//fromYear2 = 1999;
@@ -103,26 +104,28 @@ public class DBLPLabelGenerator {
 			while ((currentLineString = br_year.readLine()) != null) {
 				StringTokenizer st = new StringTokenizer(currentLineString,"\t");  
 				paperIndex = Integer.parseInt(st.nextToken());
-				year = Integer.parseInt(st.nextToken());
+				year = Integer.parseInt(st.nextToken());                     
 				paper_year_map.put(paperIndex, year);
-			}
+			}       // 新发表的paper及年份，token后 生成maptree
 
 
 			while ((currentLineString = br.readLine()) != null) {
-				ArrayList<Integer> papersList = new ArrayList<Integer>();
+				ArrayList<Integer> papersList = new ArrayList<Integer>();    //ArrayList是自动扩容的Arrays。有add().remove()这样的方法
 				ArrayList<Integer> authorsList = new ArrayList<Integer>();
 
 				StringTokenizer st = new StringTokenizer(currentLineString,"\t");  
 				paperIndex = Integer.parseInt(st.nextToken());
-				authorIndex = Integer.parseInt(st.nextToken());
+				authorIndex = Integer.parseInt(st.nextToken());     //token paper和author的index
 
-				year = paper_year_map.get(paperIndex);
-				if (year >= fromYear1 && year <= toYear1){
+				year = 
+					
+					.get(paperIndex);
+				if (year >= fromYear1 && year <= toYear1){                            //对于在第一段时间内发表的论文
 
-					if (author_papers_map1.containsKey(authorIndex)){
-						papersList = author_papers_map1.get(authorIndex);
-					}
-					papersList.add(paperIndex);
+					if (author_papers_map1.containsKey(authorIndex)){              //containsKey 如果此映射包含指定键的映射关系，则返回 true
+						papersList = author_papers_map1.get(authorIndex);      //如果存在authorindex的关系，那么用authorindex生成一个paperlist，
+					}                                                              //然后再paperlist中加入paperindex
+					papersList.add(paperIndex);                                    //最终生成author_papers_map1（后面是如果存在paperindex的情况）
 					author_papers_map1.put(authorIndex, papersList);
 
 					if (paper_authors_map1.containsKey(paperIndex)){
@@ -131,7 +134,7 @@ public class DBLPLabelGenerator {
 					authorsList.add(authorIndex);
 					paper_authors_map1.put(paperIndex, authorsList);
 
-				}else if (year >= fromYear2 && year <= toYear2){
+				}else if (year >= fromYear2 && year <= toYear2){                      //对于在第二段时间内发表的论文
 
 					if (author_papers_map2.containsKey(authorIndex)){
 						papersList = author_papers_map2.get(authorIndex);
