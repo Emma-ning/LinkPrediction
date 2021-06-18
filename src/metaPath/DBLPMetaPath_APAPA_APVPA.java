@@ -42,8 +42,8 @@ public class DBLPMetaPath_APAPA_APVPA {
 		private String venue;
 		private int year;
 
-		public PaperVenue(String paper, String venue, int year) {
-			this.paper = paper;
+		public PaperVenue(String paper, String venue, int year) 
+			this.paper = paper;                                 //将public变量传递给private
 			this.venue = venue;
 			this.year = year;
 		}
@@ -106,17 +106,17 @@ public class DBLPMetaPath_APAPA_APVPA {
 		String v, i, j;
 		//long startTime = System.currentTimeMillis();
 
-		// for author with index a for each paper index i 
+		// for author with index a for each paper index i                                          a-author index;i-paper index;v-venue;j-同样发布在v的paper
 		//   find venue v where i is published at
 		//   for each paper index j that is published at v (j and i can be equal for instance for PC(i,i)
-		//		if j has author index b, then PathCount++
+		//		                                                                           if j has author index b, then PathCount++
 		
 		List<PaperVenue> papervenuelist = author_papervenuelist_map.get(a);
 		
 		//if (papervenuelist.size()<5)
 		//	return -10;
 		
-		for (PaperVenue pv : papervenuelist){
+		for (PaperVenue pv : papervenuelist){                                                     //在年份条件内，遍历paper和venue，比如得到paper1以及其venue1
 			// ignore papers out of target interval
 			if (pv.getYear() < fromYear || pv.getYear() > toYear)
 				continue;
@@ -124,12 +124,12 @@ public class DBLPMetaPath_APAPA_APVPA {
 			i = pv.getPaper();
 			v = pv.getVenue();
 			//System.out.println("v: " + v);
-			List<PaperAuthors> paperauthorslist = venue_paperauthorslist_map.get(v);
+			List<PaperAuthors> paperauthorslist = venue_paperauthorslist_map.get(v); //在paperauthorslist表中，寻找venue1，并在符合年份条件内，遍历venue1下的paper2
 			for (PaperAuthors pa: paperauthorslist){
-				if (pa.getYear() < fromYear || pa.getYear() > toYear)
+				if (pa.getYear() < fromYear || pa.getYear() > toYear)                    
 					continue;
 				j = pa.getPaper();
-				for (String author: pa.getAuthors())
+				for (String author: pa.getAuthors())                        //遍历paper2的所有作者，比如author1，如果author1 = b ，the PathCount++
 					if (author.equals(b)){
 						//System.out.println("There is a path from " + a + " to " + b + ": " + i + "-" + v + "-" + j);
 						PathCount++;
@@ -155,9 +155,9 @@ public class DBLPMetaPath_APAPA_APVPA {
 		int PathCount = 0;
 		String i, j;
 
-		// for author with index a for each paper index i 
-		//   for each author c who wrote i and c!=a
-		//   for each paper index j that is written by c (j and i can be equal for instance for PC(i,i)
+		// for author with index a for each paper index i                                                         a-author index;i-paper index;
+		//   for each author c who wrote i and c!=a                                                             c也写了i但c!=a;  j-另一个paper index; c也写了j
+		//   for each paper index j that is written by c (j and i can be equal for instance for PC(i,i)            如果j有其他author index(b),则PathCount++
 		//		if j has author index b, then PathCount++
 		
 		List<PaperVenue> papervenuelist = author_papervenuelist_map.get(a);
@@ -165,21 +165,21 @@ public class DBLPMetaPath_APAPA_APVPA {
 		//if (papervenuelist.size()<5)
 		//	return -10;
 
-		for (PaperVenue pv : papervenuelist){
+		for (PaperVenue pv : papervenuelist){                                      //遍历每一个author index 如author index1
 			// ignore papers out of target interval
-			if (pv.getYear() < fromYear || pv.getYear() > toYear)
+			if (pv.getYear() < fromYear || pv.getYear() > toYear)              
 				continue;
 			
-			i = pv.getPaper();
-			for (String c: paper_authorslist_map.get(i)){
+			i = pv.getPaper();                                                 //在符合年份的条件下，找到对应的paper，遍历paper，如得到paper1                    
+			for (String c: paper_authorslist_map.get(i)){                        //提取paper1的author index2，如果author index1=2，
 				if (c.equals(a))
 					continue;
-				for (PaperVenue pv2 : author_papervenuelist_map.get(c)){
+				for (PaperVenue pv2 : author_papervenuelist_map.get(c)){    //那么就遍历与author index2写的paper，如paper2
 					// ignore papers out of target interval
 					if (pv2.getYear() < fromYear || pv2.getYear() > toYear)
 						continue;
 					j = pv2.getPaper();
-					for (String author: paper_authorslist_map.get(j)){
+					for (String author: paper_authorslist_map.get(j)){      //得到paper2的其他作者author index3
 						if (author.equals(b)){
 							//System.out.println("There is a path from " + a + " to " + b + ": " + i + "-" + c + "-" + j);
 							PathCount++;
@@ -208,12 +208,12 @@ public class DBLPMetaPath_APAPA_APVPA {
 		int a_a = pathCount(a,a); 
 		int b_b = pathCount(b,b); 
 		
-		// ignore less productive
+		// ignore less productive  在该时间段内未发布过paper的
 		if (a_a<0 || b_b<0)
 			return -10;
 
 		
-		// check if the source or destination author actually published in that interval to avoid NaN for 0.0/0.0
+		// check if the source or destination author actually published in that interval to avoid NaN for 0.0/0.0   ？？？不明白
 		if (a_a + b_b == 0)
 			return -1;
 		
