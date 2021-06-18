@@ -260,28 +260,28 @@ public class DBLPMetaPath_APAPA_APVPA {
 		TreeSet<Integer> n = new TreeSet<Integer>();  
 		String v, i, j;
 
-		// for author with index a for each paper index i 
-		//   find venue v where i is published at
-		//   for each paper index j that is published at v (j and i can be equal for instance for PC(i,i)
-		//		add authors of j as neighbors of a
+		// for author with index a for each paper index i                                                   a- author index；i-paper index；
+		//   find venue v where i is published at                                                           v-venue，i发布于v；
+		//   for each paper index j that is published at v (j and i can be equal for instance for PC(i,i)   对于另一个paper index(j),其作者为b;j,i同样发布于v;
+		//		add authors of j as neighbors of a                                                  那么a与b为邻居    
 
 		List<PaperVenue> papervenuelist = author_papervenuelist_map.get(a);
-		for (PaperVenue pv : papervenuelist){
+		for (PaperVenue pv : papervenuelist){                                  //遍历作者名字
 			// ignore papers before 2000
 			//if (pv.getYear() < 2010)
 			//	continue;
 			
-			i = pv.getPaper();
+			i = pv.getPaper();                                            //得到相关paper以及venue
 			v = pv.getVenue();
-			List<PaperAuthors> paperauthorslist = venue_paperauthorslist_map.get(v);
-			for (PaperAuthors pa: paperauthorslist){
+			List<PaperAuthors> paperauthorslist = venue_paperauthorslist_map.get(v);         
+			for (PaperAuthors pa: paperauthorslist){                      //基于地点 再得到该地点的paper
 				j = pa.getPaper();
-				for (String author: pa.getAuthors())
-					n.add(Integer.parseInt(author));
+				for (String author: pa.getAuthors())                 //得到这些paper的作者
+					n.add(Integer.parseInt(author));              //生成原作者与其他作者的treeset
 			}
 		}
 
-		n.remove(Integer.parseInt(a)); // remove the node from its neighbor
+		n.remove(Integer.parseInt(a)); // remove the node from its neighbor     //在这个类中去掉原作者自己
 		return n;
 	}
 
