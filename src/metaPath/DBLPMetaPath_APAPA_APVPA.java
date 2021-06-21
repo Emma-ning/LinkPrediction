@@ -106,11 +106,11 @@ public class DBLPMetaPath_APAPA_APVPA {
 		String v, i, j;
 		//long startTime = System.currentTimeMillis();
 
-		// for author with index a for each paper index i 
-		//   find venue v where i is published at
-		//   for each paper index j that is published at v (j and i can be equal for instance for PC(i,i)
-		//		if j has author index b, then PathCount++
-		
+		// for author with index a for each paper index i                                                    a-author index；i-paper index；v-venue；
+		//   find venue v where i is published at 
+		//   for each paper index j that is published at v (j and i can be equal for instance for PC(i,i)    每个v有好多的paper index，假如存在两个paper index
+		//		if j has author index b, then PathCount++                                            分别为j，i。 则PC（j，i）=PC（i，i）
+		                                                                                                   //如果j的作者与i不同，则PathCount++
 		List<PaperVenue> papervenuelist = author_papervenuelist_map.get(a);
 		
 		//if (papervenuelist.size()<5)
@@ -155,12 +155,12 @@ public class DBLPMetaPath_APAPA_APVPA {
 		int PathCount = 0;
 		String i, j;
 
-		// for author with index a for each paper index i 
-		//   for each author c who wrote i and c!=a
-		//   for each paper index j that is written by c (j and i can be equal for instance for PC(i,i)
-		//		if j has author index b, then PathCount++
+		// for author with index a for each paper index i                                                  a-author index；i-paper index；v-venue；
+		//   for each author c who wrote i and c!=a                                                        i存在其他作者c，其中c！=a
+		//   for each paper index j that is written by c (j and i can be equal for instance for PC(i,i)    c还写了其他paper index-j，则PC（i，j）=PC（i，i）
+		//		if j has author index b, then PathCount++                                          如果paper index-j存在其他作者，即author index
 		
-		List<PaperVenue> papervenuelist = author_papervenuelist_map.get(a);
+		List<PaperVenue> papervenuelist = author_papervenuelist_map.get(a);                              //那么PathCount++
 
 		//if (papervenuelist.size()<5)
 		//	return -10;
@@ -316,7 +316,7 @@ public class DBLPMetaPath_APAPA_APVPA {
 			if (readFromSavedGeneratedHashmaps==true){
 
 				// <author, list of [paper, venue]>
-				FileInputStream fileIn = new FileInputStream("author_papervenuelist_map.ser");
+				FileInputStream fileIn = new FileInputStream("author_papervenuelist_map.ser");       //对这两个文件干啥了？
 				ObjectInputStream in = new ObjectInputStream(fileIn);
 				author_papervenuelist_map = (HashMap<String, List<PaperVenue>>) in.readObject();
 				in.close();
@@ -349,11 +349,11 @@ public class DBLPMetaPath_APAPA_APVPA {
 
 				int[] paperVenue = new int[3177887]; // the index of this array correspond to the paper index and the value corresonf to venue index
 
-				while ((currentLineString = brPaperVenue.readLine()) != null) {
+				while ((currentLineString = brPaperVenue.readLine()) != null) {                     //拆分表brPaperVenue
 					StringTokenizer st2 = new StringTokenizer(currentLineString,"\t");  
 					paperIndex = st2.nextToken();
 					venueIndex = st2.nextToken();
-					paperVenue[Integer.parseInt(paperIndex)] = Integer.parseInt(venueIndex);
+					paperVenue[Integer.parseInt(paperIndex)] = Integer.parseInt(venueIndex);    //papervenue的paperindex要等于venueindex
 				}
 
 				int year;
@@ -361,18 +361,18 @@ public class DBLPMetaPath_APAPA_APVPA {
 					StringTokenizer st = new StringTokenizer(currentLineString,"\t");  
 					paperIndex = st.nextToken();
 					year = Integer.parseInt(st.nextToken());
-					paper_year_map.put(paperIndex, year);
+					paper_year_map.put(paperIndex, year);                                //paper与year关系的map
 				}
 
 
-				while ((currentLineString = brPaperAuthor.readLine()) != null) {
+				while ((currentLineString = brPaperAuthor.readLine()) != null) {      //拆分brPaperAuthor，生成paperindex，authorindex，venueindex，year
 					List<PaperVenue> paperVenueList = new ArrayList<PaperVenue>();
 					List<PaperAuthors> paperAuthorsList = new ArrayList<PaperAuthors>();
 
 					StringTokenizer st = new StringTokenizer(currentLineString,"\t");  
 					paperIndex = st.nextToken();
 					authorIndex = st.nextToken();
-					venueIndex = Integer.toString(paperVenue[Integer.parseInt(paperIndex)]);	
+					venueIndex = Integer.toString(paperVenue[Integer.parseInt(paperIndex)]);	 //venueindex=paperVenue[paperIndex]
 					year = paper_year_map.get(paperIndex);
 
 					// add to author_papervenuelist_map
@@ -493,8 +493,8 @@ public class DBLPMetaPath_APAPA_APVPA {
 			} 
 			
 			
-			//for (int i=0; i<3177887;i++){
-			for (int i=0; i<0;i++){
+			//for (int i=0; i<3177887;i++){                     计算author inde有多少邻居
+			for (int i=0; i<0;i++){                
 				authorIndex = Integer.toString(i);
 				TreeSet<Integer> n = getNeighbors(authorIndex);
 				System.out.println("Author " + authorIndex + " has " + n.size() + " neighbors");
