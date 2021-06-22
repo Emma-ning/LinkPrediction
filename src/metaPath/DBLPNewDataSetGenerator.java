@@ -55,8 +55,8 @@ public class DBLPNewDataSetGenerator {
 			//for (int i=0; i<2888731; i++){
 
 				//currentLineString = lfile.readLine();
-				label = currentLineString.substring(currentLineString.indexOf(":")+1);
-
+				label = currentLineString.substring(currentLineString.indexOf(":")+1);  //currentLineString.indexOf(":")返回指定字符在字符串中第一次出现处的索引
+                                                                                                        //substring返回从起始位置（beginIndex）至字符串末尾的字符串
 				f0 = apppa.readLine();
 				f1 = apvpa.readLine();
 				f2 = apapa.readLine();
