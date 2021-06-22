@@ -372,39 +372,40 @@ public class DBLPMetaPath_APAPA_APVPA {
 					StringTokenizer st = new StringTokenizer(currentLineString,"\t");  
 					paperIndex = st.nextToken();
 					authorIndex = st.nextToken();
-					venueIndex = Integer.toString(paperVenue[Integer.parseInt(paperIndex)]);	 //venueindex=paperVenue[paperIndex]
-					year = paper_year_map.get(paperIndex);
+					venueIndex = Integer.toString(paperVenue[Integer.parseInt(paperIndex)]);	 //venueindex=paperIndex
+					year = paper_year_map.get(paperIndex);                                        //设置好了paperindex  authorindex venueindex year
 
 					// add to author_papervenuelist_map
-					PaperVenue new_pv = new PaperVenue(paperIndex, venueIndex, year); 
-					if (author_papervenuelist_map.containsKey(authorIndex)){
+					PaperVenue new_pv = new PaperVenue(paperIndex, venueIndex, year);       //new_pv 是指包括paperIndex, venueIndex, year在内的这个整体
+					if (author_papervenuelist_map.containsKey(authorIndex)){               //对于author_papervenuelist_map存在的authorIndex
 						paperVenueList = author_papervenuelist_map.get(authorIndex);
 					}
-					paperVenueList.add(new_pv);
-					author_papervenuelist_map.put(authorIndex, paperVenueList);
-
+					paperVenueList.add(new_pv);                                            //要将他们的paperIndex, venueIndex, year调取出来储存到paperVenueList 中    
+					author_papervenuelist_map.put(authorIndex, paperVenueList);    //将authorIndex与paperVenueList整合在一起更新map叫做author_papervenuelist_map
+//map中.put()插入具有指定键的指定值
 					// add to venue_paperauthorslist_map
 					ArrayList<String> authorsList = new ArrayList<String>();
-					authorsList.add(authorIndex);
+					authorsList.add(authorIndex);                                               //生成一个新list叫authorlist，并添加authorindex
 					PaperAuthors new_pa = new PaperAuthors(paperIndex, authorsList, year); 				
-					boolean paperFoundInVenue = false;
-					if (venue_paperauthorslist_map.containsKey(venueIndex)){
-						paperAuthorsList = venue_paperauthorslist_map.get(venueIndex);
+					boolean paperFoundInVenue = false;                                        
+					if (venue_paperauthorslist_map.containsKey(venueIndex)){               //对于venue_paperauthorslist_map存在的venueindex
+						paperAuthorsList = venue_paperauthorslist_map.get(venueIndex);   //新建的表paperAuthorsList中，添加venueindex的相关数据
 						for (PaperAuthors pa: paperAuthorsList){
-							if (pa.getPaper().equals(paperIndex)){ // add author to list of authors for the existing paper
-								authorsList = pa.getAuthors();
-								authorsList.add(authorIndex);
+							if (pa.getPaper().equals(paperIndex)){ // add author to list of authors for the existing paper  
+								authorsList = pa.getAuthors();   
+								authorsList.add(authorIndex);  //上面把原来的作者给去掉了 现在要加回来
 								pa.setAuthors(authorsList);
-								paperFoundInVenue = true;
+								
+								= true;
 								break;
 							}
 						}
-						if (paperFoundInVenue == false){ // new paper and new author should be added
+						if (paperFoundInVenue == false){ // new paper and new author should be added  
 							paperAuthorsList.add(new_pa);
 						}
 					}else
 						paperAuthorsList.add(new_pa);
-					venue_paperauthorslist_map.put(venueIndex, paperAuthorsList);
+					venue_paperauthorslist_map.put(venueIndex, paperAuthorsList);     //生成venune-paper，Authors，year的map
 				}
 
 				long endTime = System.currentTimeMillis();
@@ -449,7 +450,7 @@ public class DBLPMetaPath_APAPA_APVPA {
 				BufferedWriter bw = new BufferedWriter(new FileWriter(new File(APVPA_file_name)));
 				BufferedWriter bw2 = new BufferedWriter(new FileWriter(new File(APAPA_file_name)));
 
-				labels = new BufferedReader(new FileReader(labels_file_name));
+				labels = new BufferedReader(new FileReader(labels_file_name));                          //这是在干啥？？？
 				// file format example
 				//0,1:1
 				//...
