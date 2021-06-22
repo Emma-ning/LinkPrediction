@@ -46,28 +46,28 @@ public class DBLPNewPaperIndex {
 				StringTokenizer st = new StringTokenizer(currentLineString,"\t");  
 				paperIndex = st.nextToken();
 				otherString = st.nextToken();
-				if (!paper_old_new_index_map.containsKey(paperIndex)){
-					paper_old_new_index_map.put(paperIndex, Integer.toString(index));
+				if (!paper_old_new_index_map.containsKey(paperIndex)){                      //将br中所有的paperindex都导入到这个map中
+					paper_old_new_index_map.put(paperIndex, Integer.toString(index));    //将paperindex进行序号排列  如：3243，0；3412，1
 					index++;
 				}
 			}
 			// citedby
 			while ((currentLineString = brCitedBy.readLine()) != null) {
-				StringTokenizer st = new StringTokenizer(currentLineString,"\t");  
-				paperIndex = st.nextToken();
-				newPaperIndex = paper_old_new_index_map.get(paperIndex);
-				bwCitedBy.write(newPaperIndex + "\t");
-				paperIndex = st.nextToken();
-				newPaperIndex = paper_old_new_index_map.get(paperIndex);
-				bwCitedBy.write(newPaperIndex + "\n");
+				StringTokenizer st = new StringTokenizer(currentLineString,"\t");      //对每一行进行拆分
+				paperIndex = st.nextToken();                                           //拆分出paperindex
+				newPaperIndex = paper_old_new_index_map.get(paperIndex);               //new paperindex=对应着相应的我们刚刚新赋值的0，1，2
+				bwCitedBy.write(newPaperIndex + "\t");                                 //在bwCitedBy中新填写newindex 在加一个tab（即空格）
+				paperIndex = st.nextToken();                                           //此时再拆分paperindex 得到的数据为citeby的论文
+				newPaperIndex = paper_old_new_index_map.get(paperIndex);               //在生成新index
+				bwCitedBy.write(newPaperIndex + "\n");                                 //添加到bwCitedBy中
 			}
 			// paper_index
 			while ((currentLineString = brPaperIndex.readLine()) != null) {
 				StringTokenizer st = new StringTokenizer(currentLineString,"\t");  
 				paperIndex = st.nextToken();
-				newPaperIndex = paper_old_new_index_map.get(paperIndex);
-				bwPaperIndex.write(newPaperIndex + "\t");
-				otherString = st.nextToken();
+				newPaperIndex = paper_old_new_index_map.get(paperIndex);              //将paperindex换成我们刚刚新赋值的
+				bwPaperIndex.write(newPaperIndex + "\t");                             //然后write文件 再加tab
+				otherString = st.nextToken();                                         //将剩下的string 加在后面一行
 				bwPaperIndex.write(otherString + "\n");
 			}
 			// paper_venue
