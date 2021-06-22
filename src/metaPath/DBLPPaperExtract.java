@@ -44,18 +44,18 @@ public class DBLPPaperExtract {
 
 				//System.out.println (currentLineString);
 
-				if (currentLineString.equals("")){
+				if (currentLineString.equals("")){                                      //dblp的内容是啥？
 					// writing cited-by tuples
-					bwPaperIndex.write(paperIndex + "\t" + paperTitle + "\n");
-					if (citedByIndex!=null){
+					bwPaperIndex.write(paperIndex + "\t" + paperTitle + "\n");     //如果dblp为“”，bwPaperIndex改写为 ‘具体的paperIndex 具体的paperTitle’
+					if (citedByIndex!=null){                                       //
 						for (String s: citedby)
-							bwCitedBy.write(paperIndex + "\t" + s + "\n");
+							bwCitedBy.write(paperIndex + "\t" + s + "\n"); //bwCitedBy改写为 ‘具体的paperIndex   具体的citedby’
 						citedByIndex = null;
 						citedby.clear();
 					}
 
 					for (Integer aIndex: authorIndexList){
-						bwPaperAuthor.write(paperIndex + "\t" + aIndex + "\n");
+						bwPaperAuthor.write(paperIndex + "\t" + aIndex + "\n"); //bwPaperAuthor改写为 ‘具体的paperIndex   具体的authorindex’
 					}
 					authorIndexList.clear();
 
@@ -64,14 +64,14 @@ public class DBLPPaperExtract {
 
 				if (currentLineString.toLowerCase().contains("#*")){
 					//title
-					paperTitle = currentLineString.substring(currentLineString.indexOf("#*")+2);
+					paperTitle = currentLineString.substring(currentLineString.indexOf("#*")+2); //paperTitle为从当前位置到最后的所有字符
 					//System.out.println(paperTitle);
 
 					// term extraction from title
-					StringTokenizer st = new StringTokenizer(paperTitle,", ");  
-					while (st.hasMoreTokens()) {  
+					StringTokenizer st = new StringTokenizer(paperTitle,", ");                          
+					while (st.hasMoreTokens()) {                                   //hasMoreTokens()该方法是用来判断是否还有分隔符
 						String term = st.nextToken();
-						// replace any punctuation char but apostrophes and dashes with a space
+						// replace any punctuation char but apostrophes and dashes with a space   用空格替换除撇号和破折号以外的任何标点符号
 						term = term.replaceAll("[\\p{Punct}&&[^'-]]+", "");
 						term = term.replaceAll("-", "");
 						// replace most common English contractions
@@ -81,7 +81,7 @@ public class DBLPPaperExtract {
 								"to", "was", "will", "with", "from", "form", "within", "when", "what", "where", "without", "vs", "very", "via", "use", "un",
 								"up", "down", "left", "right", "under", "one", "two", "top", "over", "less", "more", "la", "its", "high", "low", "do", "de",
 								"c", "all", "you", "me", "they");
-						// get rid of empty ones, stop words, and numeric
+						// get rid of empty ones, stop words, and numeric   删除空的，停止词和数字
 						if (term.equals("") || stopWords.contains(term) || term.matches("[-+]?\\d*\\.?\\d+"))
 							continue;
 						if (!wordCounts.containsKey(term)) {
