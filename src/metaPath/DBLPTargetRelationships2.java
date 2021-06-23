@@ -31,11 +31,11 @@ import java.util.TreeSet;
  */
 public class DBLPTargetRelationships2 {
 
-	private static TreeMap<Integer, ArrayList<Integer>> author_papers_map = new TreeMap<Integer, ArrayList<Integer>>();    
-	private static TreeMap<Integer, ArrayList<Integer>> paper_authors_map = new TreeMap<Integer, ArrayList<Integer>>();    
+	private static TreeMap<Integer, ArrayList<Integer>> author_papers_map = new TreeMap<Integer, ArrayList<Integer>>();    //新map-author_papers_map
+	private static TreeMap<Integer, ArrayList<Integer>> paper_authors_map = new TreeMap<Integer, ArrayList<Integer>>();    //新map-paper_authors_map
 
-	private static TreeMap<Integer, Integer> paper_year_map = new TreeMap<Integer, Integer>();    
-	private static TreeMap<Integer, TreeSet<Integer>> coauthors = new TreeMap<Integer, TreeSet<Integer>>();    
+	private static TreeMap<Integer, Integer> paper_year_map = new TreeMap<Integer, Integer>();                       //新map-paper_year_map
+	private static TreeMap<Integer, TreeSet<Integer>> coauthors = new TreeMap<Integer, TreeSet<Integer>>();          //新map-coauthors
 
 	public static void main(String[] args) 
 	{	 
@@ -50,15 +50,15 @@ public class DBLPTargetRelationships2 {
 			//BufferedWriter bw = new BufferedWriter(new FileWriter(new File("coauthorship_int1_1936_2009.txt")));
 			BufferedWriter bw = new BufferedWriter(new FileWriter(new File("coauthorship_1of7_1996_1998.txt")));
 
-			while ((currentLineString = br_year.readLine()) != null) {
+			while ((currentLineString = br_year.readLine()) != null) {                       //对于文件paper_newindex_year.txt
 				StringTokenizer st = new StringTokenizer(currentLineString,"\t");  
 				paperIndex = Integer.parseInt(st.nextToken());
 				year = Integer.parseInt(st.nextToken());
-				paper_year_map.put(paperIndex, year);
+				paper_year_map.put(paperIndex, year);                                     //生成paper_year_map
 			}
 
 
-			while ((currentLineString = br.readLine()) != null) {
+			while ((currentLineString = br.readLine()) != null) {                       //对于文件paper_newindex_author.txt
 				ArrayList<Integer> papersList = new ArrayList<Integer>();
 				ArrayList<Integer> authorsList = new ArrayList<Integer>();
 
@@ -66,7 +66,7 @@ public class DBLPTargetRelationships2 {
 				paperIndex = Integer.parseInt(st.nextToken());
 				authorIndex = Integer.parseInt(st.nextToken());
 
-				year = paper_year_map.get(paperIndex);
+				year = paper_year_map.get(paperIndex);                                 //生成在1930-1996年之间的coauthor的信息
 				if (year >= fromYear && year <= toYear){
 
 					if (author_papers_map.containsKey(authorIndex)){
