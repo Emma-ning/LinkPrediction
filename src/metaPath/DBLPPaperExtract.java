@@ -38,7 +38,7 @@ public class DBLPPaperExtract {
 			BufferedWriter bwPaperVenue = new BufferedWriter(new FileWriter(new File("paper_venue.txt")));
 			BufferedWriter bwPaperAuthor = new BufferedWriter(new FileWriter(new File("paper_author.txt")));
 			BufferedWriter bwPaperYear = new BufferedWriter(new FileWriter(new File("paper_year.txt")));
-			BufferedWriter bwTermIndex = new BufferedWriter(new FileWriter(new File("term_index.txt")));
+			BufferedWriter bwTermIndex = new BufferedWriter(new FileWriter(new File("term_index.txt")));   //数据文本，在题目中出现频率超过50的词
 
 			while ((currentLineString = br.readLine()) != null) {
 
@@ -82,10 +82,10 @@ public class DBLPPaperExtract {
 								"up", "down", "left", "right", "under", "one", "two", "top", "over", "less", "more", "la", "its", "high", "low", "do", "de",
 								"c", "all", "you", "me", "they");
 						// get rid of empty ones, stop words, and numeric   删除空的，停止词和数字
-						if (term.equals("") || stopWords.contains(term) || term.matches("[-+]?\\d*\\.?\\d+"))
+						if (term.equals("") || stopWords.contains(term) || term.matches("[-+]?\\d*\\.?\\d+"))   //matches() 方法用于检测字符串是否匹配给定的正则表达式。
 							continue;
 						if (!wordCounts.containsKey(term)) {
-							wordCounts.put(term, 1);
+							wordCounts.put(term, 1);                             //词汇计算，计算title里面都有什么词，如果不存在这个词则为1，如果之前存在这个词则.get(term)+1
 						} else {
 							wordCounts.put(term, wordCounts.get(term) + 1);
 						}
@@ -99,13 +99,13 @@ public class DBLPPaperExtract {
 					StringTokenizer st = new StringTokenizer(authorList,",");  
 					while (st.hasMoreTokens()) {  
 						String author = st.nextToken();
-						if (author.charAt(0)==' ') // removing space after ,
+						if (author.charAt(0)==' ') // removing space after , 删除空格
 							author = author.substring(1);
-						if (!authors.containsKey(author)){
-							authorIndexList.add(authorIndex);
-							authors.put(author, authorIndex++);
-						}else{
-							authorIndexList.add(authors.get(author));
+						if (!authors.containsKey(author)){              //authors 是一个新map   如果这个map里没有这个author
+							authorIndexList.add(authorIndex);       //先要在authorIndexList中加入authorindex
+							authors.put(author, authorIndex++);     //再将其加入map
+						}else{                                                 //如果这个map里有这个author了
+							authorIndexList.add(authors.get(author));        //则只在authorIndexList中加入authorindex
 						}
 
 						//System.out.println(author);
@@ -125,12 +125,12 @@ public class DBLPPaperExtract {
 					venue = venue.replaceAll("\"", "");
 					venue = venue.replaceAll(" ", "");
 					venue = venue.replaceAll("#", "");
-					int pos = venue.indexOf(":");
+					int pos = venue.indexOf(":");           //返回指定字符在字符串中第一次出现处的索引，如果此字符串中没有这样的字符，则返回-1，pos>=0说明存在这样的字符
 					if (pos>=0)
 						venue = venue.substring(0,venue.indexOf(":"));
 					pos = venue.indexOf("*");
 					if (pos==0)
-						venue = venue.substring(1);
+						venue = venue.substring(1);   //substring返回字符串的子字符串
 					
 					pos = venue.lastIndexOf(".");
 					if (pos==venue.length()-1)
@@ -162,21 +162,21 @@ public class DBLPPaperExtract {
 
 			}
 
-			for (String v : venues.keySet()) {
+			for (String v : venues.keySet()) {             //获取Map对象的所有键名，然后迭代输出
 				int count = venues.get(v);
 				//System.out.println(count + "\t" + v);
-				bwVenueIndex.write(count + "\t" + v + "\n");
+				bwVenueIndex.write(count + "\t" + v + "\n");     //给venue一个index
 			}
 
 			for (String a : authors.keySet()) {
 				int count = authors.get(a);
-				//System.out.println(count + "\t" + a);
+				//System.out.println(count + "\t" + a);         //给author一个index
 				bwAuthorIndex.write(count + "\t" + a + "\n");
 			}
 
 			
 			for (String word : wordCounts.keySet()) {
-				int count = wordCounts.get(word);
+				int count = wordCounts.get(word);                          //出现频率超过50次的词形成一个bwTermIndex。     
 				if (count >= 50)
 					bwTermIndex.write(count + "\t" + word + "\n");
 			}
