@@ -36,14 +36,14 @@ public class DBLPRandomizer {
 		try{
 			BufferedReader pred1file = new BufferedReader(new FileReader("DBLP/3IntervalsPrediction/dblp_3int_MetaDynaMix_PredictionFor_2010_2016.txt"));
 			BufferedWriter bw = new BufferedWriter(new FileWriter(new File("DBLP/3IntervalsPrediction/rand_dblp_3int_MetaDynaMix_PredictionFor_2010_2016.txt")));
-			float a=0f;
-			Random rand = new Random();
+			float a=0f;   //0f：定义了一个浮点类型
+			Random rand = new Random();   //构造随机数
 
 
 			while ((currentLineString2 = pred1file.readLine()) != null) {
-				a = Float.parseFloat(currentLineString2);
+				a = Float.parseFloat(currentLineString2);   //从位置0开始查看每个字符，直到找到第一个非有效的字符为止，然后把该字符之前的字符串转换成数字
 
-				if(rand.nextFloat()>0.9){
+				if(rand.nextFloat()>0.9){   //nextFloat()是指随机生成一个浮点数
 					if (a<0.5) a+=0.1;
 					else a-=0.1;
 				}
