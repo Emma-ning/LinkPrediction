@@ -231,7 +231,7 @@ public class DBLP_PC_APAPA_APVPA {
 	
 	
 	/**
-	 * Given index of two authors, calculate number of different paths of type A-P-A-P-A (e.g. Jim-P1-Sam-P4-Tom)
+	 * Given index of two authors, calculate number of different paths of type A-P-A-P-A (e.g. Jim-P1-Sam-P4-Tom)  
 	 * @param authorIndex a
 	 * @param authorIndex b
 	 * @return pathCount between them
@@ -240,32 +240,32 @@ public class DBLP_PC_APAPA_APVPA {
 		int PathCount = 0;
 		String i, j;
 
-		// for author with index a for each paper index i 
-		//   for each author c who wrote i and c!=a
-		//   for each paper index j that is written by c (j and i can be equal for instance for PC(i,i)
-		//		if j has author index b, then PathCount++
+		// for author with index a for each paper index i                                                 a-authorindex； i-paperindex
+		//   for each author c who wrote i and c!=a                                                        c写了i但是c！=a
+		//   for each paper index j that is written by c (j and i can be equal for instance for PC(i,i)    c同时也写了其他的paper，我们命名为j  
+		//		if j has author index b, then PathCount++                                           如果j有其他作者b，那么PathCount++ 
 		
-		List<PaperVenue> papervenuelist = author_papervenuelist_map.get(a);
+		List<PaperVenue> papervenuelist = author_papervenuelist_map.get(a);      ///得到关于作者a的paper-venue
 		
 		//if (papervenuelist.size()<5)
 		//	return -10;
-
-		for (PaperVenue pv : papervenuelist){
+  
+		for (PaperVenue pv : papervenuelist){                     //对每一个paperindex进行遍历                                
 			// ignore papers out of target interval
 			if (pv.getYear() < fromYear || pv.getYear() > toYear)
 				continue;
 			
-			i = pv.getPaper();
-			for (String c: paper_authorslist_map.get(i)){
-				if (c.equals(a))
+			i = pv.getPaper();                                    //对符合年份条件的paperindex
+			for (String c: paper_authorslist_map.get(i)){         //遍历所有作者，
+				if (c.equals(a))                              //如果c=a，跳出本次循环
 					continue;
-				for (PaperVenue pv2 : author_papervenuelist_map.get(c)){
+				for (PaperVenue pv2 : author_papervenuelist_map.get(c)){    //对于c！=a的情况
 					// ignore papers out of target interval
-					if (pv2.getYear() < fromYear || pv2.getYear() > toYear)
+					if (pv2.getYear() < fromYear || pv2.getYear() > toYear)   
 						continue;
-					j = pv2.getPaper();
-					for (String author: paper_authorslist_map.get(j)){
-						if (author.equals(b)){
+					j = pv2.getPaper();                                            //得到c写的其他符合年份要求的paper
+					for (String author: paper_authorslist_map.get(j)){             //并得到每一个paper的相关作者list，并遍历这个list
+						if (author.equals(b)){                                 //如果其中有作者等于前面我们所查找的b，则ok
 							//if (b.equals("485596"))
 							//	System.out.println("There is a path from " + a + " to " + b + ": " + i + "-" + c + "-" + j);
 							PathCount++;
@@ -295,17 +295,17 @@ public class DBLP_PC_APAPA_APVPA {
 		int a_a = pathCount(a,a); 
 		int b_b = pathCount(b,b); 
 		
-		// ignore less productive
-		if (a_a<0 || b_b<0)
+		// ignore less productive          
+		if (a_a<0 || b_b<0)               //a或者b作者在同一个venue发表的数量小于0篇
 			return -10;
 
 		
-		// check if the source or destination author actually published in that interval to avoid NaN for 0.0/0.0
+		// check if the source or destination author actually published in that interval to avoid NaN for 0.0/0.0   a与b作者同时发布数量小于0
 		if (a_a + b_b == 0)
 			return -1;
 		
-		ps = (float)2*pathCount(a,b) / (float)(a_a + b_b);
-		if (ps > 1)
+		ps = (float)2*pathCount(a,b) / (float)(a_a + b_b);        //如果a与b发布数量满足以上条件，则定义了一个公式
+		if (ps > 1)                                               //说明了什么？
 			System.out.println(pathCount(a,b) + " " + pathCount(a,a) + " " + pathCount(b,b));
 		return ps;
 	}
@@ -324,8 +324,8 @@ public class DBLP_PC_APAPA_APVPA {
 		int a_a = pathCount2(a,a); 
 		int b_b = pathCount2(b,b); 
 		
-		// ignore less productive
-		if (a_a<0 || b_b<0)
+		// ignore less productive     查看a
+		if (a_a<0 || b_b<0)            
 			return -10;
 		
 		// check if the source or destination author actually published in that interval to avoid NaN for 0.0/0.0
@@ -348,10 +348,10 @@ public class DBLP_PC_APAPA_APVPA {
 		TreeSet<Integer> n = new TreeSet<Integer>();  
 		String v, i, j;
 
-		// for author with index a for each paper index i 
-		//   find venue v where i is published at
-		//   for each paper index j that is published at v (j and i can be equal for instance for PC(i,i)
-		//		add authors of j as neighbors of a
+		// for author with index a for each paper index i                                        a-authorindex； i-paperindex
+		//   find venue v where i is published at                                     v-venue   i发布在v
+		//   for each paper index j that is published at v (j and i can be equal for instance for PC(i,i)   对于发布在v的其他paper-j
+		//		add authors of j as neighbors of a                                                  j的作者就是a的邻居
 
 		List<PaperVenue> papervenuelist = author_papervenuelist_map.get(a);
 		for (PaperVenue pv : papervenuelist){
@@ -400,19 +400,19 @@ public class DBLP_PC_APAPA_APVPA {
 			brPaperVenue = new BufferedReader(new FileReader("paper_newindex_venue.txt"));
 			brPaperYear = new BufferedReader(new FileReader("paper_newindex_year.txt"));
 
-			if (readFromSavedGeneratedHashmaps==true){
+			if (readFromSavedGeneratedHashmaps==true){                                              //？？？？？
 
 				// <author, list of [paper, venue]>
 				FileInputStream fileIn = new FileInputStream("author_papervenuelist_map.ser");
 				ObjectInputStream in = new ObjectInputStream(fileIn);
-				author_papervenuelist_map = (HashMap<String, List<PaperVenue>>) in.readObject();
+				author_papervenuelist_map = (HashMap<String, List<PaperVenue>>) in.readObject();  //读取map-author_papervenuelist_map.ser
 				in.close();
 				fileIn.close();
 
 				// <venue, list of [paper, author]>
 				FileInputStream fileIn1 = new FileInputStream("venue_paperauthorslist_map.ser");
 				ObjectInputStream in1 = new ObjectInputStream(fileIn1);
-				venue_paperauthorslist_map = (HashMap<String, List<PaperAuthors>>) in1.readObject();
+				venue_paperauthorslist_map = (HashMap<String, List<PaperAuthors>>) in1.readObject();  //读取map-venue_paperauthorslist_map.ser
 				in1.close();
 				fileIn1.close();
 
