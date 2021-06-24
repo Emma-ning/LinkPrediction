@@ -37,17 +37,17 @@ public class DBLPshuffeleDataSet {
 			BufferedReader dataset = new BufferedReader(new FileReader("ataset3.txt"));
 			BufferedWriter newdataset = new BufferedWriter(new FileWriter(new File("shuffledataset3.txt")));
 
-			List<String> instances = new ArrayList<String>();
+			List<String> instances = new ArrayList<String>();      //一个新list
 
 			for (int i=0; i<5408146; i++){
 				String data = dataset.readLine();
-				instances.add(data);
+				instances.add(data);                     //将dataset里的数据转移到这个新list中
 			}
 
-			Collections.shuffle(instances);
+			Collections.shuffle(instances);     //用于通过使用默认随机性对指定的列表元素进行随机重新排序来工作。
 
 			for (int i=0; i<5408146; i++){
-				newdataset.write(instances.get(i) + "\n");
+				newdataset.write(instances.get(i) + "\n");   //将shuffle后的dataset存入到新文件中
 			}
 
 			dataset.close();
