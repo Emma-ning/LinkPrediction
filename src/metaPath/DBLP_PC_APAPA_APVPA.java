@@ -109,26 +109,26 @@ public class DBLP_PC_APAPA_APVPA {
 		//   find venue v where i is published at
 		//   find authors that published in v
 		
-		List<PaperVenue> papervenuelist = author_papervenuelist_map.get(a);
+		List<PaperVenue> papervenuelist = author_papervenuelist_map.get(a);                 
 		
 		//if (papervenuelist.size()<5)
 		//	return -10;
 		
 		for (PaperVenue pv : papervenuelist){
 			// ignore papers out of target interval
-			if (pv.getYear() < fromYear || pv.getYear() > toYear)
+			if (pv.getYear() < fromYear || pv.getYear() > toYear)                    //对于一个paper，如果年份满足要求
 				continue;
 			
-			i = pv.getPaper();
+			i = pv.getPaper();                                                      //则i=其paperindex，v=其venue
 			v = pv.getVenue();
 			//System.out.println("v: " + v);
-			List<PaperAuthors> paperauthorslist = venue_paperauthorslist_map.get(v);
-			for (PaperAuthors pa: paperauthorslist){
-				if (pa.getYear() < fromYear || pa.getYear() > toYear)
+			List<PaperAuthors> paperauthorslist = venue_paperauthorslist_map.get(v);       //再在venue_paperauthorslist_map中，查找v所包括的paper以及author
+			for (PaperAuthors pa: paperauthorslist){                                       //放入list-paperauthorslist中，
+				if (pa.getYear() < fromYear || pa.getYear() > toYear)                 //对于这个里面的每一条记录，如果符合年份要求
 					continue;
-				j = pa.getPaper();
-				for (String author: pa.getAuthors())
-					connections.add(author);
+				j = pa.getPaper();                                                   //得到j=其paperindex
+				for (String author: pa.getAuthors())                                 //对于这个paper的每一个作者
+					connections.add(author);                                     //都要放入connections中 
 					//System.out.println("There is a path from " + a + " to " + author + ": " + i + "-" + v + "-" + j);
 			}
 		}
@@ -137,7 +137,7 @@ public class DBLP_PC_APAPA_APVPA {
 
 	
 	/**
-	 * Finds authors of paths of type A-P-V-P-A (e.g. Jim-P1-KDD-P4-Tom)
+	 * Finds authors of paths of type A-P-V-P-A (e.g. Jim-P1-KDD-P4-Tom)   查看作者a与b之间的路径数量
 	 * @return 
 	 */
 	public static int countPath(String a, String b){
