@@ -51,10 +51,10 @@ public class DBLP_PC_APPPA {
 	public static int pathCount(String a, String b){    //a-i->c<-j-b
 		int PathCount = 0, year;
 
-		// for author with index a for each paper index i 
-		//   find paper c where i cited it
-		//   for each paper index j that cites c (j and i can be equal for instance for PC(i,i)
-		//		if j has author index b, then PathCount++
+		// for author with index a for each paper index i                    a-authorindex   i-paperindex
+		//   find paper c where i cited it                               i引用了另一篇文章c
+		//   for each paper index j that cites c (j and i can be equal for instance for PC(i,i)    然后其他的pape-j也引用了c
+		//		if j has author index b, then PathCount++                                j的作者b与a则为PathCount++         
 
 		List<String> paperslist = author_paperslist_map.get(a);
 		for (String i : paperslist){
@@ -242,7 +242,8 @@ public class DBLP_PC_APPPA {
 
 			brPaperAuthor.close();
 			brPaperCitedBy.close();
-			brPaperYear.close();
+			
+			.close();
 			brPaperAuthor.close();
 			brPaperCitedBy.close();
 			labels.close();
