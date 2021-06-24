@@ -33,20 +33,20 @@ public class DBLPshuffeleLabels {
 		String currentLineString;
 
 	    String lableFileName = args[0];
-	    String shuffledlableFileName = args[1];
+	    String shuffledlableFileName = args[1];     
 
 
 		try{
 			//BufferedReader dataset = new BufferedReader(new FileReader("labels_1996_2002_newLinkIn_2003_2009.txt"));
 			//BufferedWriter newdataset = new BufferedWriter(new FileWriter(new File("shuffledlabels_1996_2002_newLinkIn_2003_2009.txt")));
-			BufferedReader dataset = new BufferedReader(new FileReader(lableFileName));
+			BufferedReader dataset = new BufferedReader(new FileReader(lableFileName));    
 			BufferedWriter newdataset = new BufferedWriter(new FileWriter(new File(shuffledlableFileName)));
 
 			List<String> instances = new ArrayList<String>();
 			String data;
 			int count = 0;
 			
-	         while ((data = dataset.readLine()) != null) {
+	         while ((data = dataset.readLine()) != null) {   //这个dataset的具体内容是什么？没有导入外部txt吗？
 					instances.add(data);
 					count++;
 	          } 
