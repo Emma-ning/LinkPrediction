@@ -185,7 +185,7 @@ public class DBLPLabelGenerator {
 
 
 			for (int i=0; i<1752443; i++){
-				TreeSet<Integer> coauthorsList_minPublication = new TreeSet<Integer>();      //设置了一个最小论文数，只有超过这个数量的作者才会被考虑
+				TreeSet<Integer> coauthorsList_minPublication = new TreeSet<Integer>();      //设置了一个最少论文数量，只有超过这个数量的作者才会被考虑
 				if (author_papers_map1.containsKey(i)){
 					// disregard author who has less than min papers
 					if (author_papers_map1.get(i).size() < minPublication)
@@ -196,7 +196,7 @@ public class DBLPLabelGenerator {
 								coauthorsList_minPublication.add(a);
 						}
 					}
-					coauthors1_minPublication.put(i, coauthorsList_minPublication);
+					coauthors1_minPublication.put(i, coauthorsList_minPublication);    //生成满足论文发表数量数量限制的map，名为coauthors1_minPublication
 				}else{
 					//System.out.println("Author " + i + " has no publication at time1!.");
 				}			
@@ -280,21 +280,21 @@ public class DBLPLabelGenerator {
 
 				if (coauthors1.containsKey(i)){                                                //对于每一个author
 					TreeSet<Integer> coauthorsList = coauthors1.get(i);                    //得到每个author的coauthor123
-					for (Integer j:coauthorsList){                                         //如果coauthor123也存在在author表中
+					for (Integer j:coauthorsList){                                         //如果coauthor123也存在在主author表中
 						if (coauthors1.containsKey(j)){
 							//cocoauthorsList = coauthors1.get(j);
 							twoHopCoauthors.addAll(coauthors1.get(j));         //那么得到coauthor123的coauthor并生成字典名‘twoHopCoauthors’
-							//for (Integer k:cocoauthorsList){
+							//for (Integer k:cocoauthorsList){                 
 							//	if (coauthors1.containsKey(k))
 							//		threeHopCoauthors.addAll(coauthors1.get(k));
 							//}					
 						}
 					}
-					// finally decide to mergethem all!                                     //此时得到的twoHopCoauthors需要去掉author和coauthor
+					// finally decide to mergethem all!                                     //此时得到的twoHopCoauthors需要去掉author-i和i的相关coauthor
 					twoHopCoauthors.remove(i); // remove author himself
-					twoHopCoauthors.removeAll(coauthorsList); // remove first hop coauthors
+					twoHopCoauthors.removeAll(coauthorsList); // remove first hop coauthors 
 
-					//threeHopCoauthors.addAll(twoHopCoauthors);
+					//threeHopCoauthors.addAll(twoHopCoauthors);                            //也就是说这个数据集代表了，a与b合作，b与c合作，但c又与a没有联系的人
 					//threeHopCoauthors.remove(i); // remove author himself
 					//threeHopCoauthors.removeAll(coauthorsList); // remove first hop coauthors
 
@@ -306,6 +306,8 @@ public class DBLPLabelGenerator {
 					twoHopCoauthors.clear();
 					//threeHopCoauthors.clear();
 				}
+
+				/**
 
 
 
