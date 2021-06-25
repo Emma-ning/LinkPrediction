@@ -461,14 +461,14 @@ public class DBLPMetaPath_APAPA_APVPA {
 					counter++;
 					
 					from = 0;
-					to = currentLineString.indexOf(",", from);
-					sourceNode = Integer.parseInt(currentLineString.substring(from,to));
+					to = currentLineString.indexOf(",", from);   //返回从 fromIndex 位置开始查找指定字符在字符串中第一次出现处的索引，在这里指的是从from的位置开始查找‘,’
+					sourceNode = Integer.parseInt(currentLineString.substring(from,to));  //substring() 方法返回字符串的子字符串。substring(int beginIndex, int endIndex（不包括）)
 					//if (sourceNode>20)
 					//	break;
 					from = to+1;
 					to = currentLineString.indexOf(":", from);
 					destNode = Integer.parseInt(currentLineString.substring(from,to));
-					bw.write(pathSim(Integer.toString(sourceNode), Integer.toString(destNode))+"\n");
+					bw.write(pathSim(Integer.toString(sourceNode), Integer.toString(destNode))+"\n");//sourceNode主作者的index，destNode关联作者的index
 					//if (counter%100000==0)
 					//	System.out.println(counter);
 
