@@ -107,13 +107,13 @@ public class DBLPTemporalPredictionFeature {
 				counter++;
 				from = 0;
 				to = currentLineString.indexOf(",", from);
-				sourceNode = Integer.parseInt(currentLineString.substring(from,to));
+				sourceNode = Integer.parseInt(currentLineString.substring(from,to));       //sourceNode 主作者id
 				//if (sourceNode>20)
 				//	break;
 				from = to+1;
 				to = currentLineString.indexOf(":", from);
-				destNode = Integer.parseInt(currentLineString.substring(from,to));
-				label=Integer.parseInt(currentLineString.substring(currentLineString.indexOf(":")+1));
+				destNode = Integer.parseInt(currentLineString.substring(from,to));     //destNode 合作者id
+				label=Integer.parseInt(currentLineString.substring(currentLineString.indexOf(":")+1));   //label是否成功合作 如果成功为0，如果没成功为1
 
 				if (counter%1000000==0)
 					System.out.println(counter);
