@@ -70,26 +70,26 @@ public class DBLPLinkPredict {
 			//1,3:1,0.00000058:2,0.00000116:5,0.00000116
 			//2,2:2,0.00000058:5,1.00000000
 			currentLineString = br.readLine();
-			int numOfNodes = Integer.parseInt(currentLineString);
+			int numOfNodes = Integer.parseInt(currentLineString);   //numOfNodes读取的第一行，代表这个数据集一共包括多少数据
 			int from = 0, to = 0;
-			for (int i=0; i < numOfNodes; i++){
+			for (int i=0; i < numOfNodes; i++){             //i小于总数，就继续循环
 				currentLineString = br.readLine();
 				from = 0;
 				to = currentLineString.indexOf(",", from);
-				nodeIndex = Integer.parseInt(currentLineString.substring(from,to));
+				nodeIndex = Integer.parseInt(currentLineString.substring(from,to));   //nodeIndex为主作者index
 				//System.out.println("nodeIndex:" + nodeIndex);
 				from = to+1;
 				to = currentLineString.indexOf(":", from);
-				numOfNonZero = currentLineString.substring(from,to);
+				numOfNonZero = currentLineString.substring(from,to);    //numOfNonZero为这个作者有多少个合作者的数量
 				//System.out.println("numOfNonZero:" + numOfNonZero);
-				for (int j=0; j < Integer.parseInt(numOfNonZero) ; j++){
+				for (int j=0; j < Integer.parseInt(numOfNonZero) ; j++){    //j小于这个数量就继续循环
 					from = to+1;
 					to = currentLineString.indexOf(",", from);
-					latentPosIndex = Integer.parseInt(currentLineString.substring(from,to));
+					latentPosIndex = Integer.parseInt(currentLineString.substring(from,to));   //latentPosIndex合作者id
 
 					from = to+1;
 					to = from+10;
-					weight = Double.parseDouble(currentLineString.substring(from, to));
+					weight = Double.parseDouble(currentLineString.substring(from, to));       //weight 与这个合作者的权重
 					//System.out.println("latentPosIndex:" + latentPosIndex + ", weight:" + weight);
 					//LatentPosWeigh LPW = new LatentPosWeigh(latentPosIndex, weight);
 					//System.out.println(LPW);
@@ -133,12 +133,12 @@ public class DBLPLinkPredict {
 				currentLineString = br2.readLine();
 				from = 0;
 				to = currentLineString.indexOf(",", from);
-				nodeIndex = Integer.parseInt(currentLineString.substring(from,to));
+				nodeIndex = Integer.parseInt(currentLineString.substring(from,to));   //nodeIndex 主作者id
 				//System.out.println("nodeIndex:" + nodeIndex);
 				from = to+1;
 				to = currentLineString.indexOf(":", from);
 				if (to<=0) to = currentLineString.length();
-				numOfNonZero = currentLineString.substring(from,to);
+				numOfNonZero = currentLineString.substring(from,to);   //numOfNonZero合作者数量
 				//System.out.println("numOfNonZero:" + numOfNonZero);
 
 				ArrayList<Integer> n = new ArrayList<Integer>();
@@ -146,7 +146,7 @@ public class DBLPLinkPredict {
 				for (int j=0; j < Integer.parseInt(numOfNonZero) ; j++){
 					from = to+1;
 					to = currentLineString.indexOf(",", from);
-					neighborIndex = Integer.parseInt(currentLineString.substring(from,to));
+					neighborIndex = Integer.parseInt(currentLineString.substring(from,to));   //neighborIndex合作者index
 					// ignoring weight
 					from = to+1;  to = from+1;
 					//System.out.println("neighborIndex:" + neighborIndex);
