@@ -68,7 +68,7 @@ public class DBLPResultsEvaluation {
 			//BufferedReader pred4file = new BufferedReader(new FileReader("DBLP/7IntervalsPrediction/training3_1999_2001_min5paper.txt"));
 			BufferedWriter bw = new BufferedWriter(new FileWriter(new File("DBLP/3IntervalsPrediction/dblpPredict_3.txt")));
 
-
+                        //此时predict已经结束，文件中储存的为 pre的结果 与原始label的结果
 			double temporalPredict;
 			int label, pred1, pred2, pred3, pred4;
 
@@ -79,15 +79,15 @@ public class DBLPResultsEvaluation {
 
 			while ((currentLineString = pred4file.readLine()) != null) {
 				label = (currentLineString.charAt(0) == '-') ? 0 : 1 ; 
-				temporalPredict = Double.parseDouble(currentLineString.substring(currentLineString.indexOf(":")+1));
-				pred4 = (temporalPredict>=0.5) ? 1 : 0;
+				temporalPredict = Double.parseDouble(currentLineString.substring(currentLineString.indexOf(":")+1)); 
+				pred4 = (temporalPredict>=0.5) ? 1 : 0;          //判断temporalPredict是否大于0.5   但是temporalPredict是怎么计算的呢？
 
 				
 				currentLineString2 = pred1file.readLine();
 				
 				StringTokenizer st = new StringTokenizer(currentLineString2," ");  
 				st.nextToken();
-				float pred = Float.parseFloat(st.nextToken());
+				float pred = Float.parseFloat(st.nextToken());   //
 				bw.write(pred + "," + label + "\n");
 								
 				pred1 = (currentLineString2.charAt(0) == '-') ? 0 : 1 ;
@@ -97,7 +97,7 @@ public class DBLPResultsEvaluation {
 				//System.out.println("label: " + label + " " + pred1 + " " + pred2 + " " + pred3 + " " + pred4);
 
 				// n_cc_1vs2=0, n_ci_1vs2=0, n_ic_1vs2=0, n_ii_1vs2=0;
-				if (label==1){
+				if (label==1){                                    //定义混淆矩阵用于evaluation
 					if (pred1==1){
 						TP_1++;
 						if (pred2==1)
